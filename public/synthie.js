@@ -34,15 +34,17 @@ export class Synthie {
   }
 
   play (key) {
+    const { currentTime } = this
     const frequency = toFrequency(key)
     console.log(frequency)
 
-    this.gain.gain.setValueAtTime(1, this.currentTime)
-    this.oscillator.frequency.setValueAtTime(frequency, this.currentTime)
+    this.gain.gain.cancelScheduledValues(currentTime)
+    this.gain.gain.linearRampToValueAtTime(1, currentTime + 0.200)
+    this.oscillator.frequency.setValueAtTime(frequency, currentTime)
   }
 
   stop (key) {
-    this.gain.gain.setValueAtTime(0, this.currentTime)
+    this.gain.gain.linearRampToValueAtTime(0, this.currentTime + 0.2)
   }
 
   /**
