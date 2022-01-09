@@ -8,6 +8,45 @@
   <title>Synthie</title>
 </head>
 <body>
+  <template id="oscillator-controls">
+    <form class="oscillator">
+      <fieldset>
+        <legend>Waveform</legend>
+
+        <label>
+          Sine
+          <input type="radio" name="waveform" value="sine" checked>
+        </label>
+
+        <label>
+          Square
+          <input type="radio" name="waveform" value="square">
+        </label>
+
+        <label>
+          Sawtooth
+          <input type="radio" name="waveform" value="sawtooth">
+        </label>
+      </fieldset>
+
+      <fieldset>
+        <legend>Sweep</legend>
+
+        <label>
+          Attack
+          <input type="range" name="attack" min="0" max="1" step="0.1" value="0">
+        </label>
+
+        <label>
+          Release
+          <input type="range" name="release" min="0" max="1" step="0.1" value="0">
+        </label>
+      </fieldset>
+    </form>
+  </template>
+
+  <div class="oscillators" id="oscillators"></div>
+
   <div class="keyboard" id="keyboard">
     <div class="key -is-white">
       <button value="60"></button>

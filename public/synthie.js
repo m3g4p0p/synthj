@@ -1,18 +1,15 @@
-import { toFrequency } from './util.js'
+import { Oscillator } from './oscillator.js'
 
 window.AudioContext = window.AudioContext || window.webkitAudioContex
 
 export class Synthie {
   constructor () {
-    this.context = new AudioContext()
-    this.gain = this.context.createGain()
-    this.oscillator = this.context.createOscillator()
+    const context = new AudioContext()
 
-    this.gain.connect(this.context.destination)
-    this.gain.gain.setValueAtTime(0, this.currentTime)
-
-    this.oscillator.connect(this.gain)
-    this.oscillator.start(this.currentTime)
+    this.oscillators = [
+      new Oscillator(context),
+      new Oscillator(context)
+    ]
   }
 
   get currentTime () {
@@ -34,17 +31,11 @@ export class Synthie {
   }
 
   play (key) {
-    const { currentTime } = this
-    const frequency = toFrequency(key)
-    console.log(frequency)
-
-    this.gain.gain.cancelScheduledValues(currentTime)
-    this.gain.gain.linearRampToValueAtTime(1, currentTime + 0.200)
-    this.oscillator.frequency.setValueAtTime(frequency, currentTime)
+    this.oscillators.forEach(oscillator => oscillator.play(key))
   }
 
   stop (key) {
-    this.gain.gain.linearRampToValueAtTime(0, this.currentTime + 0.2)
+    this.oscillators.forEach(oscillator => oscillator.stop(key))
   }
 
   /**
