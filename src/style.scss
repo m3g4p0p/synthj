@@ -1,0 +1,38 @@
+body {
+  margin: 0;
+}
+
+.keyboard {
+  display: flex;
+  height: 200px;
+
+  .key {
+    button {
+      width: calc(100vw / 7);
+      height: 100%;
+      background-color: white;
+      border: 2px solid black;
+
+    }
+
+    &.-is-white:not(:first-child) button {
+      border-left: none;
+    }
+
+    &.-is-black {
+      position: relative;
+
+      button {
+        position: absolute;
+        height: 80%;
+        width: calc(100vw / 10);
+        left: calc(100vw / -20);
+        background-color: black;
+      }
+    }
+
+    button.-is-pressed {
+      background-color: purple;
+    }
+  }
+}
