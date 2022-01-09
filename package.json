@@ -1,0 +1,10 @@
+{
+  "standard": {
+    "env": {
+      "browser": true
+    }
+  },
+  "devDependencies": {
+    "standard": "^16.0.4"
+  }
+}
