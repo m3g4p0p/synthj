@@ -2,32 +2,86 @@ export class Keyboard extends EventTarget {
   constructor (elementId) {
     super()
 
+    /**
+     * @type {HTMLButtonElement|null}
+     */
+    this.pressed = null
+
     const keyboard = document.getElementById(elementId)
-    const buttons = keyboard.querySelectorAll('button')
-
-    buttons.forEach(button => {
-      button.addEventListener('touchstart', this.togglePressed(true))
-      button.addEventListener('mousedown', this.togglePressed(true))
-      button.addEventListener('mouseenter', this.togglePressed(event => event.buttons))
-
-      button.addEventListener('touchend', this.togglePressed(false))
-      button.addEventListener('touchcancel', this.togglePressed(false))
-      button.addEventListener('mouseup', this.togglePressed(false))
-      button.addEventListener('mouseleave', this.togglePressed(false))
-    })
+    keyboard.addEventListener('mousedown', this)
+    keyboard.addEventListener('mouseup', this)
+    keyboard.addEventListener('mousemove', this)
+    keyboard.addEventListener('touchstart', this)
+    keyboard.addEventListener('touchend', this)
+    keyboard.addEventListener('touchmove', this)
   }
 
-  togglePressed (value) {
-    return event => {
-      const pressed = typeof value === 'boolean' ? value : value(event)
-      const key = parseInt(event.target.value, 10)
+  /**
+   * @param {HTMLButtonElement} target
+   * @param {boolean} isPressed
+   */
+  dispatchMIDIEvent (target, isPressed) {
+    const key = parseInt(target.value, 10)
 
-      event.preventDefault()
-      event.target.classList.toggle('-is-pressed', pressed)
+    if (this.pressed) {
+      this.pressed.classList.remove('-is-pressed')
+    }
 
-      this.dispatchEvent(new CustomEvent('midimessage', {
-        detail: pressed ? [0x90, key, 127] : [0x80, key, 0]
-      }))
+    this.pressed = isPressed ? target : null
+    target.classList.toggle('-is-pressed', isPressed)
+
+    this.dispatchEvent(new CustomEvent('midimessage', {
+      detail: isPressed ? [0x90, key, 127] : [0x80, key, 0]
+    }))
+  }
+
+  /**
+   * @param {MouseEvent} event
+   */
+  handleMouseMove (event) {
+    if (event.target !== this.pressed) {
+      this.dispatchMIDIEvent(event.target, event.buttons)
+    }
+  }
+
+  /**
+   * @param {TouchEvent} event
+   */
+  handleTouchMove (event) {
+    const [{ pageX, pageY }] = event.changedTouches
+    const target = document.elementFromPoint(pageX, pageY)
+
+    switch (true) {
+      case target === this.pressed:
+        return
+      case target && target.name === 'key':
+        return this.dispatchMIDIEvent(target, true)
+      case this.pressed !== null:
+        return this.dispatchMIDIEvent(this.pressed, false)
+    }
+  }
+
+  /**
+   * @param {MouseEvent|TouchEvent} event
+   */
+  handleEvent (event) {
+    if (!event.target.value) {
+      return
+    }
+
+    event.preventDefault()
+
+    switch (event.type) {
+      case 'mouseup':
+      case 'touchend':
+        return this.dispatchMIDIEvent(event.target, false)
+      case 'mousedown':
+      case 'touchstart':
+        return this.dispatchMIDIEvent(event.target, true)
+      case 'mousemove':
+        return this.handleMouseMove(event)
+      case 'touchmove':
+        return this.handleTouchMove(event)
     }
   }
 }
