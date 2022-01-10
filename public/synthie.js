@@ -7,8 +7,8 @@ export class Synthie {
     const context = new AudioContext()
 
     this.oscillators = [
-      new Oscillator(context),
-      new Oscillator(context)
+      new Oscillator(context, { gain: 0.5 }),
+      new Oscillator(context, { gain: 0.5 })
     ]
   }
 
