@@ -1,4 +1,5 @@
 {
+  "name": "synthj",
   "scripts": {
     "build:css": "sass src/style.scss public/style.css"
   },
