@@ -1,3 +1,22 @@
+const BLACK_KEYS = [1, 3, 6, 8, 10]
+
+function createKeys (from, to) {
+  const fragment = document.createDocumentFragment()
+
+  for (let i = from; i <= to; i++) {
+    const key = document.createElement('div')
+    const button = document.createElement('button')
+
+    button.name = 'key'
+    button.value = i
+    key.className = 'key ' + (BLACK_KEYS.includes(i % 12) ? '-is-black' : '-is-white')
+    key.appendChild(button)
+    fragment.appendChild(key)
+  }
+
+  return fragment
+}
+
 export class Keyboard extends EventTarget {
   constructor (elementId) {
     super()
@@ -8,6 +27,9 @@ export class Keyboard extends EventTarget {
     this.pressed = null
 
     const keyboard = document.getElementById(elementId)
+    const keys = createKeys(60, 71)
+
+    keyboard.appendChild(keys)
     keyboard.addEventListener('mousedown', this)
     keyboard.addEventListener('mouseup', this)
     keyboard.addEventListener('mousemove', this)
