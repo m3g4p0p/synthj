@@ -1,5 +1,6 @@
 body {
   margin: 0;
+  font-family: 'Courier New', Courier, monospace;
 }
 
 .keyboard {
@@ -34,5 +35,22 @@ body {
     button.-is-pressed {
       background-color: purple;
     }
+  }
+}
+
+.overlay {
+  display: flex;
+  position: fixed;
+  align-items: center;
+  justify-content: center;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  color: white;
+  background-color: black;
+
+  h2 {
+    text-transform: uppercase;
   }
 }
