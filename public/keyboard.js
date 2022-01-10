@@ -1,5 +1,14 @@
 const BLACK_KEYS = [1, 3, 6, 8, 10]
 
+const POINTER_EVENTS = [
+  'mousedown',
+  'mouseup',
+  'mousemove',
+  'touchstart',
+  'touchend',
+  'touchmove'
+]
+
 function createKeys (from, to) {
   const fragment = document.createDocumentFragment()
 
@@ -27,15 +36,12 @@ export class Keyboard extends EventTarget {
     this.pressed = null
 
     const keyboard = document.getElementById(elementId)
-    const keys = createKeys(60, 71)
 
-    keyboard.appendChild(keys)
-    keyboard.addEventListener('mousedown', this)
-    keyboard.addEventListener('mouseup', this)
-    keyboard.addEventListener('mousemove', this)
-    keyboard.addEventListener('touchstart', this)
-    keyboard.addEventListener('touchend', this)
-    keyboard.addEventListener('touchmove', this)
+    keyboard.appendChild(createKeys(60, 71))
+
+    POINTER_EVENTS.forEach(event => {
+      keyboard.addEventListener(event, this)
+    })
   }
 
   /**
@@ -70,8 +76,8 @@ export class Keyboard extends EventTarget {
    * @param {TouchEvent} event
    */
   handleTouchMove (event) {
-    const [{ pageX, pageY }] = event.changedTouches
-    const target = document.elementFromPoint(pageX, pageY)
+    const [{ clientX, clientY }] = event.changedTouches
+    const target = document.elementFromPoint(clientX, clientY)
 
     switch (true) {
       case target === this.pressed:
@@ -87,7 +93,7 @@ export class Keyboard extends EventTarget {
    * @param {MouseEvent|TouchEvent} event
    */
   handleEvent (event) {
-    if (!event.target.value) {
+    if (event.target.name !== 'key') {
       return
     }
 
