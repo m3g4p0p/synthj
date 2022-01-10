@@ -1,5 +1,7 @@
 body {
   margin: 0;
+  color: white;
+  background-color: black;
   font-family: "Courier New", Courier, monospace;
 }
 
@@ -39,13 +41,27 @@ body {
   left: 0;
   width: 100vw;
   height: 100vh;
-  color: white;
   background-color: black;
 }
 .overlay h2 {
   text-transform: uppercase;
 }
 
+.oscillators {
+  display: flex;
+  margin: 0 5px;
+}
+.oscillators form {
+  flex-basis: 50%;
+  margin: 0 5px;
+}
+.oscillators fieldset {
+  margin: 1rem 0;
+  border-color: lime;
+}
+.oscillators legend {
+  color: lime;
+}
 .oscillators label {
   display: block;
 }
