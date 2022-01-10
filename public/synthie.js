@@ -21,6 +21,7 @@ export class Synthie {
    */
   connect (device) {
     device.addEventListener('midimessage', this)
+    this.oscillators.forEach(oscillator => oscillator.start())
   }
 
   /**

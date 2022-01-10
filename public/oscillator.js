@@ -23,24 +23,30 @@ export class Oscillator {
    * @param {AudioContext} context
    */
   constructor (context, init = {}) {
-    const { currentTime } = context
-
+    this.isStarted = false
     this.gain = context.createGain()
     this.oscillator = context.createOscillator()
     this.controls = createControls(init)
     this.currentTime = () => context.currentTime
 
+    this.gain.gain.setValueAtTime(0, context.currentTime)
     this.gain.connect(context.destination)
-    this.gain.gain.setValueAtTime(0, currentTime)
-
     this.oscillator.connect(this.gain)
-    this.oscillator.start(currentTime)
 
     oscillators.appendChild(this.controls)
   }
 
   parseFloat (name) {
     return parseFloat(this.controls.elements[name].value)
+  }
+
+  start () {
+    if (this.isStarted) {
+      return
+    }
+
+    this.isStarted = true
+    this.oscillator.start()
   }
 
   play (key) {
