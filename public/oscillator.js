@@ -45,7 +45,7 @@ export class Oscillator {
 
   play (key) {
     const currentTime = this.currentTime()
-    const frequency = toFrequency(key)
+    const frequency = toFrequency(key + this.parseFloat('octave') * 12)
 
     this.gain.gain.cancelScheduledValues(currentTime)
 

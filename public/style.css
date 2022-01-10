@@ -46,4 +46,8 @@ body {
   text-transform: uppercase;
 }
 
+.oscillators label {
+  display: block;
+}
+
 /*# sourceMappingURL=style.css.map */
