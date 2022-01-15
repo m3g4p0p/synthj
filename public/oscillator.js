@@ -1,3 +1,4 @@
+import { Controls } from './controls.js'
 import { toFrequency } from './util.js'
 
 /**
@@ -6,41 +7,33 @@ import { toFrequency } from './util.js'
 const template = document.getElementById('oscillator-controls')
 const oscillators = document.getElementById('oscillators')
 
-function createControls (init) {
+function createControls () {
   const fragment = template.content.cloneNode(true)
   const controls = fragment.firstElementChild
-
-  Object.entries(init).forEach(([key, value]) => {
-    controls.elements[key].value = value
-  })
 
   oscillators.appendChild(fragment)
   return controls
 }
 
-export class Oscillator {
+export class Oscillator extends Controls {
   /**
    * @param {AudioContext} context
    */
   constructor (context, init = {}) {
+    super(createControls(), init)
+
     this.isStarted = false
     this.gain = context.createGain()
     this.oscillator = context.createOscillator()
-    this.controls = createControls(init)
     this.currentTime = () => context.currentTime
 
     this.gain.gain.setValueAtTime(0, context.currentTime)
-    this.gain.connect(context.destination)
     this.oscillator.connect(this.gain)
-
-    oscillators.appendChild(this.controls)
   }
 
-  parseFloat (name) {
-    return parseFloat(this.controls.elements[name].value)
-  }
+  connect (destination) {
+    this.gain.connect(destination)
 
-  start () {
     if (this.isStarted) {
       return
     }

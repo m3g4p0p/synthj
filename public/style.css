@@ -47,23 +47,28 @@ body {
   text-transform: uppercase;
 }
 
+.effects,
 .oscillators {
   display: flex;
   margin: 0 5px;
 }
+.effects form,
 .oscillators form {
   flex-basis: 50%;
   margin: 0 5px;
 }
+.effects fieldset,
 .oscillators fieldset {
   margin: 1rem 0;
   border-color: lime;
 }
+.effects fieldset label,
+.oscillators fieldset label {
+  display: block;
+}
+.effects legend,
 .oscillators legend {
   color: lime;
-}
-.oscillators label {
-  display: block;
 }
 
 /*# sourceMappingURL=style.css.map */

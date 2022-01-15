@@ -1,14 +1,19 @@
+import { LFO } from './effects.js'
 import { Oscillator } from './oscillator.js'
 
 window.AudioContext = window.AudioContext || window.webkitAudioContex
 
 export class Synthie {
   constructor () {
-    const context = new AudioContext()
+    this.context = new AudioContext()
 
     this.oscillators = [
-      new Oscillator(context, { gain: 0.5 }),
-      new Oscillator(context, { gain: 0.5 })
+      new Oscillator(this.context, { gain: 0.5 }),
+      new Oscillator(this.context, { gain: 0.5 })
+    ]
+
+    this.effects = [
+      new LFO(this.context)
     ]
   }
 
@@ -20,8 +25,19 @@ export class Synthie {
    * @param {EventTarget} device
    */
   connect (device) {
+    const { destination } = [
+      ...this.effects,
+      this.context
+    ].reduceRight((destination, current) => {
+      return current.chain(destination)
+    })
+
     device.addEventListener('midimessage', this)
-    this.oscillators.forEach(oscillator => oscillator.start())
+    console.log(destination)
+
+    this.oscillators.forEach(oscillator => {
+      oscillator.connect(destination)
+    })
   }
 
   /**
