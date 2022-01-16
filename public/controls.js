@@ -6,6 +6,12 @@ export class Controls extends EventTarget {
   constructor (controls, init) {
     super()
 
+    this.controls = controls
+
+    if (!controls) {
+      return
+    }
+
     if (init) {
       Object.entries(init).forEach(([key, value]) => {
         controls.elements[key].value = value
@@ -21,12 +27,10 @@ export class Controls extends EventTarget {
         event.target.checked ? 'controlsenabled' : 'controlsdisabled'
       ))
     })
-
-    this.controls = controls
   }
 
   get isEnabled () {
-    const input = this.controls.elements.enabled
+    const input = this.controls?.elements?.enabled
     return !input || input.checked
   }
 

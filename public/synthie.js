@@ -1,5 +1,5 @@
-import { LFO } from './effects.js'
 import { Oscillator } from './oscillator.js'
+import { LFO } from './effects/lfo.js'
 
 window.AudioContext = window.AudioContext || window.webkitAudioContex
 
@@ -25,19 +25,7 @@ export class Synthie {
    * @param {EventTarget} device
    */
   connect (device) {
-    const { destination } = [
-      ...this.effects,
-      this.context
-    ].reduceRight((destination, current) => {
-      return current.chain(destination)
-    })
-
     device.addEventListener('midimessage', this)
-    console.log(destination)
-
-    this.oscillators.forEach(oscillator => {
-      oscillator.connect(destination)
-    })
   }
 
   /**
@@ -48,6 +36,14 @@ export class Synthie {
   }
 
   play (key) {
+    const destination = this.effects.reduceRight((node, effect) => {
+      return effect.chain(node)
+    }, this.context.destination)
+
+    this.oscillators.forEach(oscillator => {
+      oscillator.connect(destination)
+    })
+
     this.oscillators.forEach(oscillator => oscillator.play(key))
   }
 
@@ -59,7 +55,7 @@ export class Synthie {
    * @param {Event} event
    */
   handleEvent (event) {
-    const [command, key, velocity] = event.data || event.detail
+    const [command, key] = event.data || event.detail
 
     switch (command) {
       case 0x80:
