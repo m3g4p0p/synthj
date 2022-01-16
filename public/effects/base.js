@@ -9,41 +9,41 @@ export class Effect extends Controls {
     super(elementId && document.getElementById(elementId))
 
     /**
-     * @type {AudioNode}
+     * @type {Audioeffect}
      */
-    this._node = null
+    this._effect = null
     this.currentTime = () => context.currentTime
   }
 
   get isEnabled () {
-    return this.node !== null && super.isEnabled
+    return this.effect !== null && super.isEnabled
   }
 
-  get node () {
-    return this._node
+  get effect () {
+    return this._effect
   }
 
   get input () {
-    return this.node
+    return this.effect
   }
 
   get output () {
-    return this.node
+    return this.effect
   }
 
   /**
-   * @param {AudioNode|AudioParam} destination
+   * @param {Audioeffect|AudioParam} destination
    */
   connect (destination) {
-    return this.isEnabled && this.node.connect(destination)
+    return this.isEnabled && this.effect.connect(destination)
   }
 
   disconnect () {
-    this.node.disconnect()
+    this.effect.disconnect()
   }
 
   /**
-   * @param {Effect|AudioNode} other
+   * @param {Effect|Audioeffect} other
    */
   chain (other) {
     this.disconnect()
@@ -53,6 +53,6 @@ export class Effect extends Controls {
     }
 
     this.connect(other)
-    return this.node
+    return this.effect
   }
 }

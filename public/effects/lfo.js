@@ -8,7 +8,7 @@ export class LFO extends Effect {
     super(context, 'lfo-controls')
 
     this.isStarted = false
-    this.gain = this._node = context.createGain()
+    this.gain = this._effect = context.createGain()
     this.oscillator = context.createOscillator()
 
     this.oscillator.connect(this.gain.gain)
@@ -17,6 +17,7 @@ export class LFO extends Effect {
 
   connect (destination) {
     if (!this.isStarted) {
+      console.log('start')
       this.oscillator.start()
       this.isStarted = true
     }
@@ -25,6 +26,7 @@ export class LFO extends Effect {
   }
 
   updateFrequency () {
+    console.log(this.parseFloat('frequency'))
     this.oscillator.frequency.setValueAtTime(
       this.parseFloat('frequency'),
       this.currentTime()
