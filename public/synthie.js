@@ -1,5 +1,6 @@
 import { Oscillator } from './oscillator.js'
 import { LFO } from './effects/lfo.js'
+import { Sweep } from './effects/sweep.js'
 
 window.AudioContext = window.AudioContext || window.webkitAudioContex
 
@@ -13,7 +14,8 @@ export class Synthie {
     ]
 
     this.effects = [
-      new LFO(this.context)
+      new LFO(this.context),
+      new Sweep(this.context)
     ]
   }
 
@@ -42,13 +44,18 @@ export class Synthie {
 
     this.oscillators.forEach(oscillator => {
       oscillator.connect(destination)
+      oscillator.play(key)
     })
-
-    this.oscillators.forEach(oscillator => oscillator.play(key))
   }
 
   stop (key) {
-    this.oscillators.forEach(oscillator => oscillator.stop(key))
+    this.effects.forEach(effect => {
+      effect.stop()
+    })
+
+    this.oscillators.forEach(oscillator => {
+      oscillator.stop(key)
+    })
   }
 
   /**

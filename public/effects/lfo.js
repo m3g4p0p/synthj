@@ -1,4 +1,4 @@
-import { Effect } from './base.js'
+import { Effect } from './effect.js'
 
 export class LFO extends Effect {
   /**
@@ -15,18 +15,16 @@ export class LFO extends Effect {
     this.controls.addEventListener('change', this)
   }
 
-  connect (destination) {
-    if (!this.isStarted) {
-      console.log('start')
-      this.oscillator.start()
-      this.isStarted = true
+  start () {
+    if (this.isStarted) {
+      return
     }
 
-    return super.connect(destination)
+    this.oscillator.start()
+    this.isStarted = true
   }
 
   updateFrequency () {
-    console.log(this.parseFloat('frequency'))
     this.oscillator.frequency.setValueAtTime(
       this.parseFloat('frequency'),
       this.currentTime()

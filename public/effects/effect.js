@@ -23,12 +23,12 @@ export class Effect extends Controls {
     return this._effect
   }
 
-  get input () {
-    return this.effect
+  start () {
+    // Do nothing
   }
 
-  get output () {
-    return this.effect
+  stop () {
+    // Do nothing
   }
 
   /**
@@ -53,6 +53,8 @@ export class Effect extends Controls {
     }
 
     this.connect(other)
+    this.start()
+
     return this.effect
   }
 }
