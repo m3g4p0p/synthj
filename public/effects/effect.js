@@ -23,14 +23,6 @@ export class Effect extends Controls {
     return this._effect
   }
 
-  start () {
-    // Do nothing
-  }
-
-  stop () {
-    // Do nothing
-  }
-
   /**
    * @param {Audioeffect|AudioParam} destination
    */
@@ -45,7 +37,7 @@ export class Effect extends Controls {
   /**
    * @param {Effect|Audioeffect} other
    */
-  chain (other) {
+  chain (other, event) {
     this.disconnect()
 
     if (!this.isEnabled) {
@@ -53,7 +45,7 @@ export class Effect extends Controls {
     }
 
     this.connect(other)
-    this.start()
+    this.dispatchEvent(event)
 
     return this.effect
   }

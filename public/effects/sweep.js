@@ -9,6 +9,8 @@ export class Sweep extends Effect {
 
     this.gain = this._effect = context.createGain()
     this.gain.gain.setValueAtTime(0, context.currentTime)
+    this.addEventListener('notestarted', this)
+    this.addEventListener('notestopped', this)
   }
 
   start () {
@@ -20,5 +22,15 @@ export class Sweep extends Effect {
 
   stop () {
     this.gain.gain.linearRampToValueAtTime(0, this.currentTime() + this.parseFloat('release'))
+  }
+
+  handleEvent (event) {
+    switch (event.type) {
+      case 'notestarted':
+        return this.start()
+      case 'notestopped':
+        event.preventDefault()
+        this.stop()
+    }
   }
 }

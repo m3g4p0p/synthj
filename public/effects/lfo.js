@@ -32,6 +32,10 @@ export class LFO extends Effect {
   }
 
   handleEvent (event) {
+    if (event.type === 'notestarted') {
+      return this.start()
+    }
+
     switch (event.target.name) {
       case 'frequency':
         return this.updateFrequency()

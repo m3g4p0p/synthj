@@ -38,8 +38,10 @@ export class Synthie {
   }
 
   play (key) {
+    const event = new CustomEvent('notestarted')
+
     const destination = this.effects.reduceRight((node, effect) => {
-      return effect.chain(node)
+      return effect.chain(node, event)
     }, this.context.destination)
 
     this.oscillators.forEach(oscillator => {
@@ -49,9 +51,17 @@ export class Synthie {
   }
 
   stop (key) {
-    this.effects.forEach(effect => {
-      effect.stop()
+    const event = new CustomEvent('notestopped', {
+      cancelable: true
     })
+
+    this.effects.forEach(effect => {
+      effect.dispatchEvent(event)
+    })
+
+    if (event.defaultPrevented) {
+      return
+    }
 
     this.oscillators.forEach(oscillator => {
       oscillator.stop(key)
