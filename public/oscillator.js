@@ -42,6 +42,10 @@ export class Oscillator extends Controls {
     this.oscillator.start()
   }
 
+  disconnect () {
+    this.gain.disconnect()
+  }
+
   play (key) {
     const currentTime = this.currentTime()
     const frequency = toFrequency(key + this.parseFloat('octave') * 12)

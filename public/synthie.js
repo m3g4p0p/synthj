@@ -7,6 +7,7 @@ window.AudioContext = window.AudioContext || window.webkitAudioContex
 export class Synthie {
   constructor () {
     this.context = new AudioContext()
+    this.key = null
 
     this.oscillators = [
       new Oscillator(this.context, { gain: 0.5 }),
@@ -50,7 +51,7 @@ export class Synthie {
     })
   }
 
-  stop (key) {
+  stop () {
     const event = new CustomEvent('notestopped', {
       cancelable: true
     })
@@ -64,7 +65,7 @@ export class Synthie {
     }
 
     this.oscillators.forEach(oscillator => {
-      oscillator.stop(key)
+      oscillator.stop()
     })
   }
 
@@ -76,10 +77,17 @@ export class Synthie {
 
     switch (command) {
       case 0x80:
-        this.stop(key)
+        if (this.key) {
+          this.key = null
+          this.stop()
+        }
+
         break
       case 0x90:
-        this.play(key)
+        if (key !== this.key) {
+          this.key = key
+          this.play(key)
+        }
     }
   }
 }
