@@ -23,10 +23,6 @@ export class Sweep extends Effect {
   }
 
   handleEvent (event) {
-    if (!this.isEnabled) {
-      return
-    }
-
     switch (event.type) {
       case 'notestarted':
         return this.rampTo(0, 1, 'attack')

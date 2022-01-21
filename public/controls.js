@@ -34,6 +34,12 @@ export class Controls extends EventTarget {
     return !input || input.checked
   }
 
+  dispatchEvent (event) {
+    if (this.isEnabled) {
+      super.dispatchEvent(event)
+    }
+  }
+
   parseFloat (name) {
     return parseFloat(this.controls.elements[name].value)
   }

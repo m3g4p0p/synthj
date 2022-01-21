@@ -50,12 +50,13 @@ export class Oscillator extends Controls {
     const currentTime = this.currentTime()
     const frequency = toFrequency(key + this.parseFloat('octave') * 12)
 
+    this.gain.gain.cancelScheduledValues(currentTime)
     this.gain.gain.setValueAtTime(this.parseFloat('gain'), currentTime)
     this.oscillator.type = this.controls.elements.waveform.value
     this.oscillator.frequency.setValueAtTime(frequency, currentTime)
   }
 
   stop () {
-    this.gain.gain.setValueAtTime(0, this.currentTime())
+    this.gain.gain.setTargetAtTime(0, this.currentTime(), 0.015)
   }
 }
