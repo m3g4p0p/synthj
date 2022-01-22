@@ -13,6 +13,7 @@ export class LFO extends Effect {
 
     this.oscillator.connect(this.gain.gain)
     this.controls.addEventListener('change', this)
+    this.addEventListener('notestarted', this)
   }
 
   start () {

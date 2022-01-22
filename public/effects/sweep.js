@@ -13,22 +13,21 @@ export class Sweep extends Effect {
     this.addEventListener('notestopped', this)
   }
 
-  rampTo (from, to, name) {
+  rampTo (value, name) {
     const currentTime = this.currentTime()
     const endTime = currentTime + this.parseFloat(name)
 
-    this.gain.gain.cancelScheduledValues(currentTime)
-    this.gain.gain.setValueAtTime(from, currentTime)
-    this.gain.gain.linearRampToValueAtTime(to, endTime)
+    this.gain.gain.cancelAndHoldAtTime(currentTime)
+    this.gain.gain.linearRampToValueAtTime(value, endTime)
   }
 
   handleEvent (event) {
     switch (event.type) {
       case 'notestarted':
-        return this.rampTo(0, 1, 'attack')
+        return this.rampTo(1, 'attack')
       case 'notestopped':
         event.preventDefault()
-        this.rampTo(this.gain.gain.value, 0, 'release')
+        this.rampTo(0, 'release')
     }
   }
 }
