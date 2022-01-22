@@ -5,7 +5,7 @@ export class Sweep extends Effect {
    * @param {AudioContext} context
    */
   constructor (context) {
-    super(context, 'sweep-controls')
+    super('sweep-controls')
 
     this.gain = this._effect = context.createGain()
     this.gain.gain.setValueAtTime(0, context.currentTime)
@@ -14,7 +14,7 @@ export class Sweep extends Effect {
   }
 
   rampTo (value, name) {
-    const currentTime = this.currentTime()
+    const { currentTime } = this
     const endTime = currentTime + this.parseFloat(name)
 
     this.gain.gain.cancelAndHoldAtTime(currentTime)

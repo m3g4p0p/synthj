@@ -19,7 +19,9 @@ export class Controls extends EventTarget {
     }
 
     controls.addEventListener('change', event => {
-      this.dispatchEvent(event, true)
+      if (event.target.name.includes('.')) {
+        return this.updateValue(event)
+      }
 
       if (event.target.name !== 'enabled') {
         return
@@ -36,6 +38,10 @@ export class Controls extends EventTarget {
     return !input || input.checked
   }
 
+  /**
+   * @param {Event} event
+   * @param {Bio} force
+   */
   dispatchEvent (event, force = false) {
     if (this.isEnabled || force) {
       super.dispatchEvent(event)
@@ -44,5 +50,18 @@ export class Controls extends EventTarget {
 
   parseFloat (name) {
     return parseFloat(this.controls.elements[name].value)
+  }
+
+  updateValue (event) {
+    const { name, value } = event.target
+    const chain = name.split('.')
+    const prop = chain.pop()
+    const target = chain.reduce((target, prop) => target[prop], this)
+
+    if (target[prop] instanceof AudioParam) {
+      target[prop].value = parseFloat(value)
+    } else {
+      target[prop] = value
+    }
   }
 }

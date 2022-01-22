@@ -5,43 +5,17 @@ export class LFO extends Effect {
    * @param {AudioContext} context
    */
   constructor (context) {
-    super(context, 'lfo-controls')
+    super('lfo-controls')
 
-    this.isStarted = false
     this.gain = this._effect = context.createGain()
     this.oscillator = context.createOscillator()
 
     this.oscillator.connect(this.gain.gain)
-    this.controls.addEventListener('change', this)
-    this.addEventListener('notestarted', this)
-  }
 
-  start () {
-    if (this.isStarted) {
-      return
-    }
-
-    this.oscillator.start()
-    this.isStarted = true
-  }
-
-  updateFrequency () {
-    this.oscillator.frequency.setValueAtTime(
-      this.parseFloat('frequency'),
-      this.currentTime()
+    this.addEventListener(
+      'notestarted',
+      () => this.oscillator.start(),
+      { once: true }
     )
-  }
-
-  handleEvent (event) {
-    if (event.type === 'notestarted') {
-      return this.start()
-    }
-
-    switch (event.target.name) {
-      case 'frequency':
-        return this.updateFrequency()
-      case 'waveform':
-        this.oscillator.type = event.target.value
-    }
   }
 }

@@ -2,19 +2,17 @@ import { Controls } from '../controls.js'
 
 export class Effect extends Controls {
   /**
-   * @param {AudioContext} context
    * @param {string} elementId
    */
-  constructor (context, elementId) {
+  constructor (elementId) {
     super(elementId && document.getElementById(elementId))
 
     /**
-     * @type {Audioeffect}
+     * @type {AudioNode}
      */
     this._effect = null
-    this.currentTime = () => context.currentTime
 
-    this.addEventListener('change', event => {
+    this.controls.addEventListener('change', event => {
       if (event.target.name.includes('.')) {
         return this.updateValue(event)
       }
@@ -27,6 +25,10 @@ export class Effect extends Controls {
 
   get effect () {
     return this._effect
+  }
+
+  get currentTime () {
+    return this._effect?.context.currentTime
   }
 
   /**
@@ -54,18 +56,5 @@ export class Effect extends Controls {
     this.dispatchEvent(event)
 
     return this.effect
-  }
-
-  updateValue (event) {
-    const { name, value } = event.target
-    const chain = event.target.name.split('.')
-    const prop = chain.pop()
-    const target = chain.reduce((target, prop) => target[prop], this)
-
-    if (target[prop] instanceof AudioParam) {
-      target[prop].setValueAtTime(this.parseFloat(name, this.currentTime()))
-    } else {
-      target[prop] = value
-    }
   }
 }

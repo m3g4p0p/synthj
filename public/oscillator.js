@@ -25,10 +25,13 @@ export class Oscillator extends Controls {
     this.isStarted = false
     this.gain = context.createGain()
     this.oscillator = context.createOscillator()
-    this.currentTime = () => context.currentTime
 
     this.gain.gain.setValueAtTime(0, context.currentTime)
     this.oscillator.connect(this.gain)
+  }
+
+  get currentTime () {
+    return this.gain.context.currentTime
   }
 
   connect (destination) {
@@ -47,7 +50,7 @@ export class Oscillator extends Controls {
   }
 
   play (key) {
-    const currentTime = this.currentTime()
+    const { currentTime } = this
     const frequency = toFrequency(key + this.parseFloat('octave') * 12)
 
     this.gain.gain.cancelScheduledValues(currentTime)
@@ -57,6 +60,6 @@ export class Oscillator extends Controls {
   }
 
   stop () {
-    this.gain.gain.setTargetAtTime(0, this.currentTime(), 0.015)
+    this.gain.gain.setTargetAtTime(0, this.currentTime, 0.015)
   }
 }
