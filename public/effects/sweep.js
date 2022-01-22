@@ -7,7 +7,7 @@ export class Sweep extends Effect {
   constructor (context) {
     super('sweep-controls')
 
-    this.gain = this._effect = context.createGain()
+    this.gain = this._node = context.createGain()
     this.gain.gain.setValueAtTime(0, context.currentTime)
     this.addEventListener('notestarted', this)
     this.addEventListener('notestopped', this)
