@@ -19,13 +19,15 @@ export class Controls extends EventTarget {
     }
 
     controls.addEventListener('change', event => {
+      this.dispatchEvent(event, true)
+
       if (event.target.name !== 'enabled') {
         return
       }
 
       this.dispatchEvent(new CustomEvent(
         event.target.checked ? 'controlsenabled' : 'controlsdisabled'
-      ))
+      ), true)
     })
   }
 
@@ -34,8 +36,8 @@ export class Controls extends EventTarget {
     return !input || input.checked
   }
 
-  dispatchEvent (event) {
-    if (this.isEnabled) {
+  dispatchEvent (event, force = false) {
+    if (this.isEnabled || force) {
       super.dispatchEvent(event)
     }
   }

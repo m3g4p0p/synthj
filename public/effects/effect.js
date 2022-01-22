@@ -13,6 +13,12 @@ export class Effect extends Controls {
      */
     this._effect = null
     this.currentTime = () => context.currentTime
+
+    this.addEventListener('change', event => {
+      if (event.target.name.includes('.')) {
+        return this.updateValue(event)
+      }
+    })
   }
 
   get isEnabled () {
@@ -48,5 +54,18 @@ export class Effect extends Controls {
     this.dispatchEvent(event)
 
     return this.effect
+  }
+
+  updateValue (event) {
+    const { name, value } = event.target
+    const chain = event.target.name.split('.')
+    const prop = chain.pop()
+    const target = chain.reduce((target, prop) => target[prop], this)
+
+    if (target[prop] instanceof AudioParam) {
+      target[prop].setValueAtTime(this.parseFloat(name, this.currentTime()))
+    } else {
+      target[prop] = value
+    }
   }
 }
