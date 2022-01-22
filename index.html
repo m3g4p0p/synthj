@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+  <title>Synthj</title>
+</head>
+<body>
+  <template id="oscillator-controls">
+    <form class="oscillator">
+      <h2>Oscillator</h2>
+
+      <fieldset>
+        <label>
+          <input type="range" name="gain" min="0" max="1" step="0.1" value="0">
+          Gain
+        </label>
+
+        <label>
+          <input type="range" name="octave" min="-5" max="5" step="1" value="0">
+          Octave
+        </label>
+      </fieldset>
+
+      <fieldset>
+        <legend>Waveform</legend>
+
+        <label>
+          <input type="radio" name="waveform" value="sine" checked>
+          Sine
+        </label>
+
+        <label>
+          <input type="radio" name="waveform" value="square">
+          Square
+        </label>
+
+        <label>
+          <input type="radio" name="waveform" value="sawtooth">
+          Sawtooth
+        </label>
+      </fieldset>
+    </form>
+  </template>
+
+  <div class="oscillators" id="oscillators"></div>
+  <div class="keyboard" id="keyboard"></div>
+
+  <div class="effects">
+    <form id="lfo-controls">
+      <h2>
+        <label>
+          <input type="checkbox" name="enabled" checked>
+          <span class="light"></span>
+          LFO
+        </label>
+      </h2>
+
+      <fieldset>
+        <label>
+          <input type="range" name="oscillator.frequency" min="0" max="10" step="0.1" value="0">
+          Frequency
+        </label>
+      </fieldset>
+
+      <fieldset>
+        <legend>Waveform</legend>
+
+        <label>
+          <input type="radio" name="oscillator.type" value="sine" checked>
+          Sine
+        </label>
+
+        <label>
+          <input type="radio" name="oscillator.type" value="square">
+          Square
+        </label>
+
+        <label>
+          <input type="radio" name="oscillator.type" value="sawtooth">
+          Sawtooth
+        </label>
+      </fieldset>
+    </form>
+
+    <form id="sweep-controls">
+      <h2>
+        <label>
+          <input type="checkbox" name="enabled" checked>
+          <span class="light"></span>
+          Sweep
+        </label>
+      </h2>
+
+      <fieldset>
+        <label>
+          <input type="range" name="attack" min="0" max="1" step="0.1" value="0">
+          Attack
+        </label>
+
+        <label>
+          <input type="range" name="release" min="0" max="1" step="0.1" value="0">
+          Release
+        </label>
+      </fieldset>
+    </form>
+  </div>
+
+  <div id="overlay" class="overlay">
+    <h2>Connect</h2>
+  </div>
+
+  <script src="app.js" type="module"></script>
+</body>
+</html>
