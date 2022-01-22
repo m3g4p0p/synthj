@@ -78,4 +78,21 @@ body {
   legend {
     color: lime;
   }
+
+  [name="enabled"] {
+    display: none;
+
+    + .light {
+      display: inline-block;
+      width: 1rem;
+      height: 1rem;
+      background-color: darkgreen;
+      border-radius: 3px;
+    }
+
+    &:checked + .light {
+      background-color: lime;
+      box-shadow: 0 0 10px 1px rgb(0 255 0 / 50%);
+    }
+  }
 }

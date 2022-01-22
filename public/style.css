@@ -70,5 +70,22 @@ body {
 .oscillators legend {
   color: lime;
 }
+.effects [name=enabled],
+.oscillators [name=enabled] {
+  display: none;
+}
+.effects [name=enabled] + .light,
+.oscillators [name=enabled] + .light {
+  display: inline-block;
+  width: 1rem;
+  height: 1rem;
+  background-color: darkgreen;
+  border-radius: 3px;
+}
+.effects [name=enabled]:checked + .light,
+.oscillators [name=enabled]:checked + .light {
+  background-color: lime;
+  box-shadow: 0 0 10px 1px rgba(0, 255, 0, 0.5);
+}
 
 /*# sourceMappingURL=style.css.map */
