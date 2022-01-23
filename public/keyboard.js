@@ -1,3 +1,5 @@
+import { addEventListeners } from './util.js'
+
 const BLACK_KEYS = [1, 3, 6, 8, 10]
 
 const POINTER_EVENTS = [
@@ -38,10 +40,7 @@ export class Keyboard extends EventTarget {
     const keyboard = document.getElementById(elementId)
 
     keyboard.appendChild(createKeys(60, 71))
-
-    POINTER_EVENTS.forEach(event => {
-      keyboard.addEventListener(event, this)
-    })
+    addEventListeners(POINTER_EVENTS, keyboard, this)
   }
 
   /**

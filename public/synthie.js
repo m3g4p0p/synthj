@@ -1,6 +1,7 @@
 import { Oscillator } from './oscillator.js'
 import { LFO } from './effects/lfo.js'
 import { Sweep } from './effects/sweep.js'
+import { NoteEvent } from './event.js'
 
 window.AudioContext = window.AudioContext || window.webkitAudioContex
 
@@ -39,7 +40,7 @@ export class Synthie {
   }
 
   play (key) {
-    const event = new CustomEvent('notestarted')
+    const event = new NoteEvent(true)
 
     const destination = this.effects.reduceRight((node, effect) => {
       return effect.chain(node, event)
@@ -52,7 +53,7 @@ export class Synthie {
   }
 
   stop () {
-    const event = new CustomEvent('notestopped', {
+    const event = new NoteEvent(false, {
       cancelable: true
     })
 
