@@ -59,10 +59,15 @@ body {
 .effects,
 .oscillators {
   display: flex;
-  margin: 0 5px;
+  flex-wrap: wrap;
+
+  &,
+  form {
+    margin: 0 5px;
+  }
 
   form {
-    flex-basis: 50%;
+    flex-basis: calc(50% - 10px);
     margin: 0 5px;
   }
 
