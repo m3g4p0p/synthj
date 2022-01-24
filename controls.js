@@ -38,6 +38,14 @@ export class Controls extends EventTarget {
     return !input || input.checked
   }
 
+  set isEnabled (value) {
+    const input = this.controls?.elements?.enabled
+
+    if (input) {
+      input.checked = !!value
+    }
+  }
+
   /**
    * @param {Event} event
    * @param {Bio} force
