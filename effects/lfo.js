@@ -9,7 +9,7 @@ export class LFO extends Effect {
 
     this.gain = this._node = context.createGain()
     this.oscillator = context.createOscillator()
-
+    this.oscillator.frequency.value = 0
     this.oscillator.connect(this.gain.gain)
 
     this.addEventListener(
@@ -17,5 +17,9 @@ export class LFO extends Effect {
       () => this.oscillator.start(),
       { once: true }
     )
+  }
+
+  get isEnabled () {
+    return this.oscillator.frequency.value > 0 && super.isEnabled
   }
 }
