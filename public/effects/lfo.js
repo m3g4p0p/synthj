@@ -17,9 +17,9 @@ export class LFO extends Effect {
       () => this.oscillator.start(),
       { once: true }
     )
-  }
 
-  get isEnabled () {
-    return this.oscillator.frequency.value > 0 && super.isEnabled
+    this.controls.addEventListener('change', () => {
+      this.isEnabled = this.oscillator.frequency.value
+    })
   }
 }

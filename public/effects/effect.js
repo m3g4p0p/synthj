@@ -23,6 +23,10 @@ export class Effect extends Controls {
     return this.node !== null && super.isEnabled
   }
 
+  set isEnabled (value) {
+    super.isEnabled = this.node !== null && value
+  }
+
   get node () {
     return this._node
   }
