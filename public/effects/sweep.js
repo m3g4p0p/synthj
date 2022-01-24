@@ -17,7 +17,8 @@ export class Sweep extends Effect {
     const { currentTime } = this
     const endTime = currentTime + this.parseFloat(name)
 
-    this.gain.gain.cancelAndHoldAtTime(currentTime)
+    this.gain.gain.cancelScheduledValues(currentTime)
+    this.gain.gain.setValueAtTime(this.gain.gain.value, currentTime)
     this.gain.gain.linearRampToValueAtTime(value, endTime)
   }
 
