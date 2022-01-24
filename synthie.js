@@ -1,6 +1,8 @@
 import { Oscillator } from './oscillator.js'
 import { LFO } from './effects/lfo.js'
 import { Sweep } from './effects/sweep.js'
+import { NoteEvent } from './event.js'
+import { EffectsChain } from './effects/chain.js'
 
 window.AudioContext = window.AudioContext || window.webkitAudioContex
 
@@ -14,10 +16,10 @@ export class Synthie {
       new Oscillator(this.context, { gain: 0.5 })
     ]
 
-    this.effects = [
+    this.effects = new EffectsChain([
       new LFO(this.context),
       new Sweep(this.context)
-    ]
+    ])
   }
 
   get currentTime () {
@@ -39,26 +41,22 @@ export class Synthie {
   }
 
   play (key) {
-    const event = new CustomEvent('notestarted')
-
-    const destination = this.effects.reduceRight((node, effect) => {
-      return effect.chain(node, event)
-    }, this.context.destination)
+    this.effects.connect(
+      this.oscillators,
+      this.context.destination
+    ).dispatchEvent(new NoteEvent(true))
 
     this.oscillators.forEach(oscillator => {
-      oscillator.connect(destination)
       oscillator.play(key)
     })
   }
 
   stop () {
-    const event = new CustomEvent('notestopped', {
+    const event = new NoteEvent(false, {
       cancelable: true
     })
 
-    this.effects.forEach(effect => {
-      effect.dispatchEvent(event)
-    })
+    this.effects.dispatchEvent(event)
 
     if (event.defaultPrevented) {
       return

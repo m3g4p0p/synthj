@@ -7,7 +7,7 @@ export class LFO extends Effect {
   constructor (context) {
     super('lfo-controls')
 
-    this.gain = this._effect = context.createGain()
+    this.gain = this._node = context.createGain()
     this.oscillator = context.createOscillator()
 
     this.oscillator.connect(this.gain.gain)

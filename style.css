@@ -50,11 +50,17 @@ body {
 .effects,
 .oscillators {
   display: flex;
+  flex-wrap: wrap;
+}
+.effects,
+.effects form,
+.oscillators,
+.oscillators form {
   margin: 0 5px;
 }
 .effects form,
 .oscillators form {
-  flex-basis: 50%;
+  flex-basis: calc(50% - 10px);
   margin: 0 5px;
 }
 .effects fieldset,

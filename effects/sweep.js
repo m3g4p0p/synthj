@@ -7,7 +7,7 @@ export class Sweep extends Effect {
   constructor (context) {
     super('sweep-controls')
 
-    this.gain = this._effect = context.createGain()
+    this.gain = this._node = context.createGain()
     this.gain.gain.setValueAtTime(0, context.currentTime)
     this.addEventListener('notestarted', this)
     this.addEventListener('notestopped', this)
@@ -17,7 +17,8 @@ export class Sweep extends Effect {
     const { currentTime } = this
     const endTime = currentTime + this.parseFloat(name)
 
-    this.gain.gain.cancelAndHoldAtTime(currentTime)
+    this.gain.gain.cancelScheduledValues(currentTime)
+    this.gain.gain.setValueAtTime(this.gain.gain.value, currentTime)
     this.gain.gain.linearRampToValueAtTime(value, endTime)
   }
 

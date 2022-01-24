@@ -10,7 +10,7 @@ export class Effect extends Controls {
     /**
      * @type {AudioNode}
      */
-    this._effect = null
+    this._node = null
 
     this.controls.addEventListener('change', event => {
       if (event.target.name.includes('.')) {
@@ -20,41 +20,25 @@ export class Effect extends Controls {
   }
 
   get isEnabled () {
-    return this.effect !== null && super.isEnabled
+    return this.node !== null && super.isEnabled
   }
 
-  get effect () {
-    return this._effect
+  get node () {
+    return this._node
   }
 
   get currentTime () {
-    return this._effect?.context.currentTime
+    return this._node?.context.currentTime
   }
 
   /**
-   * @param {Audioeffect|AudioParam} destination
+   * @param {AudioNode|AudioParam} destination
    */
   connect (destination) {
-    return this.isEnabled && this.effect.connect(destination)
+    return this.isEnabled && this.node.connect(destination)
   }
 
   disconnect () {
-    this.effect.disconnect()
-  }
-
-  /**
-   * @param {Effect|Audioeffect} other
-   */
-  chain (other, event) {
-    this.disconnect()
-
-    if (!this.isEnabled) {
-      return other
-    }
-
-    this.connect(other)
-    this.dispatchEvent(event)
-
-    return this.effect
+    this.node.disconnect()
   }
 }
