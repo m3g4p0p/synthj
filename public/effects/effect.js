@@ -41,22 +41,4 @@ export class Effect extends Controls {
   disconnect () {
     this.node.disconnect()
   }
-
-  /**
-   * @param {AudioNode} other
-   * @param {Event} event
-   * @returns {AudioNode}
-   */
-  chain (other, event) {
-    this.disconnect()
-
-    if (!this.isEnabled) {
-      return other
-    }
-
-    this.connect(other)
-    this.dispatchEvent(event)
-
-    return this.node
-  }
 }
