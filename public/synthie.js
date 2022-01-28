@@ -1,5 +1,5 @@
 import { Oscillator } from './oscillator.js'
-import { LFO } from './effects/lfo.js'
+import { Pulse } from './effects/pulse.js'
 import { Sweep } from './effects/sweep.js'
 import { NoteEvent } from './event.js'
 import { EffectsChain } from './effects/chain.js'
@@ -17,7 +17,7 @@ export class Synthie {
     ]
 
     this.effects = new EffectsChain([
-      new LFO(this.context),
+      new Pulse(this.context),
       new Sweep(this.context)
     ])
   }

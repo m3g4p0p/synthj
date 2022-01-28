@@ -1,11 +1,11 @@
 import { Effect } from './effect.js'
 
-export class LFO extends Effect {
+export class Pulse extends Effect {
   /**
    * @param {AudioContext} context
    */
   constructor (context) {
-    super('lfo-controls')
+    super('pulse-controls')
 
     this.gain = this._node = context.createGain()
     this.oscillator = context.createOscillator()
@@ -18,8 +18,8 @@ export class LFO extends Effect {
       { once: true }
     )
 
-    this.controls.addEventListener('change', () => {
-      this.isEnabled = this.oscillator.frequency.value
-    })
+    // this.controls.addEventListener('change', () => {
+    //   this.isEnabled = this.oscillator.frequency.value
+    // })
   }
 }
